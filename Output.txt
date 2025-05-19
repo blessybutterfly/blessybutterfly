@@ -1,0 +1,35 @@
+config.json: 100%
+ 1.00k/1.00k [00:00<00:00, 47.5kB/s]
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+WARNING:huggingface_hub.file_download:Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+pytorch_model.bin: 100%
+ 329M/329M [00:03<00:00, 192MB/s]
+tokenizer_config.json: 100%
+ 294/294 [00:00<00:00, 20.6kB/s]
+vocab.json: 100%
+ 798k/798k [00:00<00:00, 10.7MB/s]
+Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+WARNING:huggingface_hub.file_download:Xet Storage is enabled for this repo, but the 'hf_xet' package is not installed. Falling back to regular HTTP download. For better performance, install the package with: `pip install huggingface_hub[hf_xet]` or `pip install hf_xet`
+merges.txt: 100%
+ 456k/456k [00:00<00:00, 34.0MB/s]
+model.safetensors: 100%
+ 329M/329M [00:03<00:00, 148MB/s]
+tokenizer.json: 100%
+ 1.36M/1.36M [00:00<00:00, 39.8MB/s]
+special_tokens_map.json: 100%
+ 239/239 [00:00<00:00, 13.2kB/s]
+Device set to use cpu
+/usr/local/lib/python3.11/dist-packages/transformers/pipelines/text_classification.py:106: UserWarning: `return_all_scores` is now deprecated, if want a similar functionality use `top_k=None` instead of `return_all_scores=True` or `top_k=1` instead of `return_all_scores=False`.
+  warnings.warn(
+                                                text emotion score
+0 i love spending time with my family they make ... joy 0.9929
+1 im feeling so anxious and overwhelmed right now fear 0.9309
+2 why is everything so difficult today i hate this anger 0.5011
+3 im grateful for everything i have joy 0.9801
+4 the world is beautiful peaceful vibes today joy 0.9904
+5 i feel so alone and depressed lately sadness 0.9945
+6 wow i just won a hackathon surprise 0.9702
+7 im worried about my exams next week fear 0.9709
+8 life is unfair and painful anger 0.7972
+9 im so proud of my progress joy 0.9887
+
