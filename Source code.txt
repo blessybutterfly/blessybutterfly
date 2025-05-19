@@ -1,0 +1,117 @@
+# Install dependencies before running:
+# pip install tweepy transformers matplotlib pandas torch
+
+
+import tweepy
+import pandas as pd
+import re
+from transformers import pipeline
+import matplotlib.pyplot as plt
+
+
+# Twitter API credentials (mock if needed)
+API_KEY = "your_api_key"
+API_SECRET = "your_api_secret"
+ACCESS_TOKEN = "your_access_token"
+ACCESS_SECRET = "your_access_secret"
+
+
+def authenticate_twitter():
+    """Authenticate with Twitter API"""
+    auth = tweepy.OAuth1UserHandler(API_KEY, API_SECRET, ACCESS_TOKEN, ACCESS_SECRET)
+    return tweepy.API(auth)
+
+
+def fetch_tweets(api, query, count=50):
+    """Fetch tweets using Tweepy"""
+    tweets = tweepy.Cursor(api.search_tweets, q=query, lang="en", tweet_mode="extended").items(count)
+    tweet_list = []
+    for tweet in tweets:
+        if 'retweeted_status' in dir(tweet):
+            text = tweet.retweeted_status.full_text
+        else:
+            text = tweet.full_text
+        tweet_list.append(text)
+    return tweet_list
+
+
+def clean_text(text):
+    """Clean tweets by removing links, mentions, and special characters"""
+    text = re.sub(r"http\S+", "", text) # Remove links
+    text = re.sub(r"@\w+", "", text) # Remove mentions
+    text = re.sub(r"#\w+", "", text) # Remove hashtags
+    text = re.sub(r"[^\w\s]", "", text) # Remove punctuation
+    text = re.sub(r"\d+", "", text) # Remove numbers
+    text = text.lower().strip()
+    return text
+
+
+def analyze_emotions(texts):
+    """Analyze emotions using Hugging Face's transformers"""
+    classifier = pipeline("text-classification", model="j-hartmann/emotion-english-distilroberta-base", return_all_scores=True)
+    results = []
+    for text in texts:
+        result = classifier(text)[0]
+        sorted_result = sorted(result, key=lambda x: x['score'], reverse=True)
+        top_emotion = sorted_result[0]
+        results.append({
+            "text": text,
+            "emotion": top_emotion["label"],
+            "score": round(top_emotion["score"], 4)
+        })
+    return results
+
+
+def visualize_emotions(results):
+    """Plot emotion distribution"""
+    df = pd.DataFrame(results)
+    emotion_counts = df["emotion"].value_counts()
+    emotion_counts.plot(kind='bar', color='skyblue')
+    plt.title("Emotion Distribution in Tweets")
+    plt.xlabel("Emotion")
+    plt.ylabel("Frequency")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
+
+
+def main():
+    # Replace this with actual API object for live data
+    # api = authenticate_twitter()
+    # tweets = fetch_tweets(api, "mental health", 50)
+
+
+    # For testing/demo purposes
+    tweets = [
+        "I love spending time with my family. They make me so happy!",
+        "I’m feeling so anxious and overwhelmed right now.",
+        "Why is everything so difficult today? I hate this.",
+        "I'm grateful for everything I have.",
+        "The world is beautiful. Peaceful vibes today.",
+        "I feel so alone and depressed lately.",
+        "Wow! I just won a hackathon!",
+        "I'm worried about my exams next week.",
+        "Life is unfair and painful.",
+        "I'm so proud of my progress."
+    ]
+
+
+    # Clean tweets
+    cleaned_tweets = [clean_text(t) for t in tweets]
+
+
+    # Analyze emotions
+    results = analyze_emotions(cleaned_tweets)
+
+
+    # Show results
+    df = pd.DataFrame(results)
+    print(df)
+
+
+    # Visualize emotions
+    visualize_emotions(results)
+
+
+if __name__ == "__main__":
+    main()
